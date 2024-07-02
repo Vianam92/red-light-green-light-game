@@ -1,6 +1,7 @@
 import { Router } from "@vaadin/router";
 import { LitElement, html, css } from "lit";
 import { ls } from "../usecase/localStorage";
+import { globalState } from "../service/global.state";
 
 export class FormComp extends LitElement {
   static styles = css`
@@ -11,6 +12,7 @@ export class FormComp extends LitElement {
   `;
   userName: string;
   disabled: boolean;
+  globalState: any;
 
   static get properties() {
     return {
@@ -23,6 +25,7 @@ export class FormComp extends LitElement {
     super();
     this.userName = "";
     this.disabled = true;
+    this.globalState = globalState;
   }
 
   navigate() {
@@ -35,6 +38,7 @@ export class FormComp extends LitElement {
       this.userName = target.value;
     }
     ls(this.userName);
+    this.globalState.setUser(this.userName);
     this.disabled = false;
   }
 

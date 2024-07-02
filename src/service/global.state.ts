@@ -1,9 +1,9 @@
 class GlobalState {
   static instance: GlobalState;
 
-  userData: UserData = {
-    username: "", points: 0, maxPoints: 0
-  };
+  userData: UserData[] = [];
+
+    user: string | undefined;
 
   constructor() {}
 
@@ -14,8 +14,16 @@ class GlobalState {
     return GlobalState.instance;
   }
 
-  setUserData(userData: UserData) {
-    this.userData = userData;
+  setUserData(userData: UserData[]) {
+    this.userData.push(...userData);
+  }
+
+  setUser(user: string){
+    this.user = user;
+  }
+
+  getUser(){
+    return this.user;
   }
 
   getUserData(){
@@ -26,7 +34,7 @@ class GlobalState {
 export const globalState = GlobalState.getInstance();
 
 export interface UserData{
-    username: string;
-    points: number;
-    maxPoints: number
+    username?: string;
+    score?: number;
+    maxPoints?: number
 }

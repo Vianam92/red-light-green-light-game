@@ -1,4 +1,4 @@
-export let users: string[] = JSON.parse(localStorage.getItem("users") || "[]");
+let users: string[] = JSON.parse(localStorage.getItem("users") || "[]");
 
 export const ls = (user: string) => {
   if (users.length > 0) {
