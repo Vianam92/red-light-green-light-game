@@ -3,9 +3,11 @@ class GlobalState {
 
   userData: UserData[] = [];
 
-    user: string | undefined;
+  user: string | undefined;
 
-  constructor() {}
+  constructor() {
+    this.loadFromLocalStorage();
+  }
 
   static getInstance(): GlobalState {
     if (!GlobalState.instance) {
@@ -15,26 +17,50 @@ class GlobalState {
   }
 
   setUserData(userData: UserData[]) {
-    this.userData.push(...userData);
+    userData.forEach((newUser) => {
+      const index = this.userData.findIndex(
+        (user) => user.username === newUser.username
+      );
+      if (index > -1) {
+        this.userData[index] = {...newUser};
+      } else {
+        if (newUser.username) {
+          this.userData.push({...newUser});
+        }
+      }
+    });
+    this.saveToLocalStorage();
   }
 
-  setUser(user: string){
+  setUser(user: string) {
     this.user = user;
+    this.saveToLocalStorage();
   }
 
-  getUser(){
+  getUser() {
     return this.user;
   }
 
-  getUserData(){
+  getUserData() {
     return this.userData;
+  }
+
+  saveToLocalStorage() {
+    localStorage.setItem("userData", JSON.stringify(this.userData));
+  }
+
+  loadFromLocalStorage() {
+    const userData = localStorage.getItem("userData");
+    if (userData) {
+      this.userData = JSON.parse(userData);
+    }
   }
 }
 
 export const globalState = GlobalState.getInstance();
 
-export interface UserData{
-    username?: string;
-    score?: number;
-    maxPoints?: number
+export interface UserData {
+  username?: string;
+  score?: number;
+  maxPoints?: number;
 }

@@ -55,11 +55,10 @@ export class GamePage extends LitElement {
       .getUserData()
       .find((x) => x.username === this.userName);
 
-    if(this.user?.score){
-      this.score = this.user.score;
+    if (this.user) {
+      this.score = this.user.score ?? 0;
+      this.maxPoints = this.user.maxPoints ?? 0;
     }
-
-    console.log(globalState.getUserData())
 
     this.changeLight();
   }
@@ -104,18 +103,18 @@ export class GamePage extends LitElement {
       }
     }
     this.lastButtonPressed = button;
-    this.user = { ...this.user, score: this.score};
+    this.user = { ...this.user, score: this.score };
 
     this.requestUpdate();
   }
 
   saveData() {
+    if (this.user) {
+      this.user.score = this.score;
+      this.user.maxPoints = Math.max(this.user.maxPoints ?? 0, this.score);
+      globalState.setUserData([this.user]);
+    }
     Router.go("/");
-    this.user = {
-      ...this.user,
-    };
-    console.log(this.user);
-    globalState.setUserData([this.user]);
   }
 
   render() {
