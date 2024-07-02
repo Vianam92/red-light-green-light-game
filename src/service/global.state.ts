@@ -1,9 +1,9 @@
-export class GlobalState {
+class GlobalState {
   static instance: GlobalState;
 
-  userData: UserData[] = [{
+  userData: UserData = {
     username: "", points: 0, maxPoints: 0
-  }];
+  };
 
   constructor() {}
 
@@ -14,12 +14,18 @@ export class GlobalState {
     return GlobalState.instance;
   }
 
-  setUserData(userData: []) {
+  setUserData(userData: UserData) {
     this.userData = userData;
+  }
+
+  getUserData(){
+    return this.userData;
   }
 }
 
-interface UserData{
+export const globalState = GlobalState.getInstance();
+
+export interface UserData{
     username: string;
     points: number;
     maxPoints: number
