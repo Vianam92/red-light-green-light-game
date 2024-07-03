@@ -6,8 +6,39 @@ import { globalState } from "../service/global.state";
 export class FormComp extends LitElement {
   static styles = css`
     :host {
-      display: block;
+      display: flex;
       padding: 16px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      row-gap: 1rem;
+      width: 100%;
+      label {
+        display: flex;
+        flex-direction: column;
+        row-gap:0.3rem;
+       padding-left:0.3rem;
+       color:#113832;
+        input {
+          height: 25px;
+          border: none;
+          border-radius: 8px;
+          padding-left:10px;
+        }
+      }
+      div{
+        width:100%;
+        display:flex;
+        justify-content:center;
+        button{
+        height:25px;
+        border-radius:8px;
+        border:none;
+        width:150px;
+      }
+      }
+     
     }
   `;
   userName: string;
@@ -46,7 +77,7 @@ export class FormComp extends LitElement {
     return html`
       <form>
         <label for="player">
-          Nombre <small>*</small>
+          Nombre *
           <input
             type="text"
             name="player"
@@ -54,9 +85,10 @@ export class FormComp extends LitElement {
             @change=${this.handlerChange}
           />
         </label>
+        <div>
         <button @click=${this.navigate} ?disabled=${this.disabled}>
           Unirse
-        </button>
+        </button></div>
       </form>
     `;
   }
