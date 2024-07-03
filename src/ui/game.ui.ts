@@ -1,31 +1,54 @@
 import { Router } from "@vaadin/router";
 import { LitElement, html, css } from "lit-element";
 import { UserData, globalState } from "../service/global.state";
+import "../components/header";
+import "../components/semáforo.component";
 
 export class GameUI extends LitElement {
   static styles = css`
     :host {
-      display: block;
       padding: 16px;
     }
-    .container-game {
-      .section-game {
-        .semaforo {
-          font-size: 2rem;
-          font-weight: 600;
-        }
-        .semaforo.red {
-          color: red;
-        }
-        .semaforo.green {
-          color: green;
-        }
+    .container-game{
+      width:100%;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      margin-top:100px;
+      .section-game{
+      display:flex;
+      justify-content:space-around;
+      align-items:center;
+      max-width:500px;
+      width:100%;
+      button{
+        height:50px;
+        width:50px;
+        font-size:1.2rem;
       }
     }
+    }
+    footer{
+      position:fixed;
+      bottom:0;
+      right:0;
+      padding:2rem;
+      button{
+        width:100px;
+        height:30px;
+        border-radius:8px;
+        border:none;
+        background-color: #064d5fea;
+        color:white;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+      }
+    }
+   
   `;
 
   userData: UserData[];
-  ligtClass: string;
+  lightClass: string;
   userName: string | undefined;
   user: UserData | undefined;
   score: number;
@@ -66,7 +89,7 @@ export class GameUI extends LitElement {
   constructor() {
     super();
     this.userData = globalState.getUserData();
-    this.ligtClass = "red";
+    this.lightClass = "red";
     this.score = 0;
     this.maxPoints = 0;
   }
@@ -76,11 +99,11 @@ export class GameUI extends LitElement {
       const greenLightDuration =
         Math.max(10000 - this.score * 100, 2000) +
         this.randomVariation(-1500, 1500);
-      if (this.ligtClass === "red") {
-        this.ligtClass = "green";
+      if (this.lightClass === "red") {
+        this.lightClass = "green";
         setTimeout(() => this.changeLight(), greenLightDuration);
       } else {
-        this.ligtClass = "red";
+        this.lightClass = "red";
         setTimeout(() => this.changeLight(), 3000);
       }
     }
@@ -93,7 +116,7 @@ export class GameUI extends LitElement {
   }
 
   incrementPoints(button: string) {
-    if (this.ligtClass === "red") {
+    if (this.lightClass === "red") {
       this.score = 0;
     } else {
       if (this.lastButtonPressed === button) {
@@ -119,23 +142,17 @@ export class GameUI extends LitElement {
 
   render() {
     return html`
-      <article class="container-game">
-        <section>
-          <header>
-            <p>Usuario: <span>${this.user?.username}</span></p>
-            <p>Puntos: <small>${this.user?.score}</small></p>
-            <p>Max de puntos: <small>${this.user?.maxPoints}</small></p>
-          </header>
-        </section>
+      <header-component .user=${this.user}></header-component>
+      <main class="container-game">
         <section class="section-game">
           <button @click=${() => this.incrementPoints("left")}><</button>
-          <p class="${`semaforo ${this.ligtClass}`}">Semáforo</p>
+          <semaforo-component .lightClass=${this.lightClass}></semaforo-component>
           <button @click=${() => this.incrementPoints("right")}>></button>
         </section>
-        <section>
-          <button @click=${() => this.saveData()}>Salir</button>
-        </section>
-      </article>
+      </main>
+      <footer>
+        <button @click=${() => this.saveData()}>Salir</button>
+      </footer>
     `;
   }
 }

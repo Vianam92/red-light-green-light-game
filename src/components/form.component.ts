@@ -1,6 +1,6 @@
 import { Router } from "@vaadin/router";
 import { LitElement, html, css } from "lit";
-import { ls } from "../usecase/localStorage";
+import { ls } from "../service/localStorage";
 import { globalState } from "../service/global.state";
 
 export class FormComp extends LitElement {
@@ -19,7 +19,7 @@ export class FormComp extends LitElement {
         flex-direction: column;
         row-gap:0.3rem;
        padding-left:0.3rem;
-       color:#113832;
+       color:white;
         input {
           height: 25px;
           border: none;
@@ -36,6 +36,7 @@ export class FormComp extends LitElement {
         border-radius:8px;
         border:none;
         width:150px;
+        color:black;
       }
       }
      

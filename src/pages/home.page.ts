@@ -10,10 +10,10 @@ export class HomeGame extends LitElement {
       height: 100vh;
 
       article {
-        background-color: #87dfd2be;
+        background-color: #064d5fea;
+        color:white;
         box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
         .title {
-          color: #113832;
           padding: 14px;
           margin: 0;
         }

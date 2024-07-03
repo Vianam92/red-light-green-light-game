@@ -4,8 +4,8 @@ import "../ui/game.ui";
 export class GamePage extends LitElement {
   static styles = css`
     :host {
-      display: block;
       padding: 16px;
+      width:100%;
     }
   `;
 
