@@ -6,6 +6,7 @@ export class GamePage extends LitElement {
     :host {
       padding: 16px;
       width:100%;
+      max-width:650px;
     }
   `;
 

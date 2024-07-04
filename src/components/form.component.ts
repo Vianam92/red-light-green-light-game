@@ -7,7 +7,7 @@ export class FormComp extends LitElement {
   static styles = css`
     :host {
       display: flex;
-      padding: 16px;
+      width:100%;
     }
     form {
       display: flex;
@@ -17,7 +17,7 @@ export class FormComp extends LitElement {
       label {
         display: flex;
         flex-direction: column;
-        row-gap:0.3rem;
+        row-gap:0.5rem;
        padding-left:0.3rem;
        color:white;
         input {

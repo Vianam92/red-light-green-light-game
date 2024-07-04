@@ -1,51 +1,45 @@
-import { Router } from "@vaadin/router";
+import { randomVariation } from "../usecase/usecase";
 import { LitElement, html, css } from "lit-element";
 import { UserData, globalState } from "../service/global.state";
 import "../components/header";
 import "../components/semáforo.component";
+import huella from "../assets/huella.png";
 
 export class GameUI extends LitElement {
   static styles = css`
     :host {
       padding: 16px;
     }
-    .container-game{
-      width:100%;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      text-align:center;
-      margin-top:100px;
-      .section-game{
-      display:flex;
-      justify-content:space-around;
-      align-items:center;
-      max-width:500px;
-      width:100%;
-      button{
-        height:50px;
-        width:50px;
-        font-size:1.2rem;
+    .container-game {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      .section-game {
+        display: flex;
+        flex-direction: column;
+        row-gap: 2rem;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 700px;
+        width: 100%;
+        div {
+          display:flex;
+          column-gap:2rem;
+          img {
+            height: 100px;
+            width: 100px;
+            font-size: 1.2rem;
+          }
+        }
       }
     }
-    }
-    footer{
-      position:fixed;
-      bottom:0;
-      right:0;
-      padding:2rem;
-      button{
-        width:100px;
-        height:30px;
-        border-radius:8px;
-        border:none;
-        background-color: #064d5fea;
-        color:white;
-        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-      }
-    }
-   
   `;
+
+  static properties = {
+    lightClass: { type: String },
+  };
 
   userData: UserData[];
   lightClass: string;
@@ -97,8 +91,7 @@ export class GameUI extends LitElement {
   changeLight() {
     if (this.user) {
       const greenLightDuration =
-        Math.max(10000 - this.score * 100, 2000) +
-        this.randomVariation(-1500, 1500);
+        Math.max(10000 - this.score * 100, 2000) + randomVariation(-1500, 1500);
       if (this.lightClass === "red") {
         this.lightClass = "green";
         setTimeout(() => this.changeLight(), greenLightDuration);
@@ -107,12 +100,6 @@ export class GameUI extends LitElement {
         setTimeout(() => this.changeLight(), 3000);
       }
     }
-
-    this.requestUpdate();
-  }
-
-  randomVariation(min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   incrementPoints(button: string) {
@@ -126,33 +113,39 @@ export class GameUI extends LitElement {
       }
     }
     this.lastButtonPressed = button;
-    this.user = { ...this.user, score: this.score };
+    this.user = { ...this.user, score: this.score, maxPoints: this.score };
 
     this.requestUpdate();
   }
 
-  saveData() {
-    if (this.user) {
-      this.user.score = this.score;
-      this.user.maxPoints = Math.max(this.user.maxPoints ?? 0, this.score);
-      globalState.setUserData([this.user]);
-    }
-    Router.go("/");
-  }
-
   render() {
     return html`
-      <header-component .user=${this.user}></header-component>
+      <header-component
+        .user=${this.user}
+        .score=${this.score}
+      ></header-component>
       <main class="container-game">
         <section class="section-game">
-          <button @click=${() => this.incrementPoints("left")}><</button>
-          <semaforo-component .lightClass=${this.lightClass}></semaforo-component>
-          <button @click=${() => this.incrementPoints("right")}>></button>
+          <div>
+            <semaforo-component
+              .lightClass=${this.lightClass}
+            ></semaforo-component>
+          </div>
+          <div>
+            <img
+              src=${huella}
+              title=""
+              @click=${() => this.incrementPoints("left")}
+            />
+
+            <img
+              src=${huella}
+              title=""
+              @click=${() => this.incrementPoints("right")}
+            />
+          </div>
         </section>
       </main>
-      <footer>
-        <button @click=${() => this.saveData()}>Salir</button>
-      </footer>
     `;
   }
 }

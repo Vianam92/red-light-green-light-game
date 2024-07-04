@@ -1,5 +1,7 @@
 import { LitElement, html, css } from "lit-element";
 import "../ui/game.ui";
+import iconRed from "../assets/luz-roja.png";
+import iconGreen from "../assets/semaforo.png";
 
 export class SemaforoComponent extends LitElement {
   static styles = css`
@@ -8,14 +10,7 @@ export class SemaforoComponent extends LitElement {
       width: 100%;
     }
     .semaforo {
-      font-size: 2rem;
-      font-weight: 600;
-    }
-    .semaforo.red {
-      color: red;
-    }
-    .semaforo.green {
-      color: green;
+      width: 10rem;
     }
   `;
 
@@ -30,14 +25,14 @@ export class SemaforoComponent extends LitElement {
     this.lightClass = "red";
   }
 
-  updated(changedProperties: { has: (arg0: string) => any }) {
-    if (changedProperties.has("lightClass")) {
-      this.requestUpdate();
-    }
-  }
-
   render() {
-    return html` <p class="${`semaforo ${this.lightClass}`}">Semáforo</p> `;
+    return html`
+      <img
+        src="${this.lightClass === "red" ? iconRed : iconGreen}"
+        title="Icono descargado de flaticon By AbtoCreative"
+        class="semaforo"
+      />
+    `;
   }
 }
 
