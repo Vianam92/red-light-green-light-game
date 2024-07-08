@@ -1,4 +1,4 @@
-import { randomVariation } from "../usecase/usecase";
+import { greenLightDuration } from "../usecase/usecase";
 import { LitElement, html, css } from "lit-element";
 import { UserData, globalState } from "../service/global.state";
 import "../components/header";
@@ -90,11 +90,10 @@ export class GameUI extends LitElement {
 
   changeLight() {
     if (this.user) {
-      const greenLightDuration =
-        Math.max(10000 - this.score * 100, 2000) + randomVariation(-1500, 1500);
+      
       if (this.lightClass === "red") {
         this.lightClass = "green";
-        setTimeout(() => this.changeLight(), greenLightDuration);
+        setTimeout(() => this.changeLight(), greenLightDuration(this.score));
       } else {
         this.lightClass = "red";
         setTimeout(() => this.changeLight(), 3000);
