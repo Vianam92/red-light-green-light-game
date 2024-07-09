@@ -11,8 +11,9 @@ if (!customElements.get("game-ui")) {
 }
 
 describe("GameUI", () => {
+  let gameUI: GameUI;
   beforeEach(() => {
-    const gameUI = document.createElement("game-ui") as GameUI;
+    gameUI = document.createElement("game-ui") as GameUI;
     document.body.appendChild(gameUI);
   });
 
@@ -37,12 +38,31 @@ describe("GameUI", () => {
   });
 
   it("should change light", async () => {
-    const gameComponent = (await fixture(
-      html`<game-ui></game-ui>`
-    )) as GameUI;
-    gameComponent.user = { username: "Luisa", score: 0, maxPoints: 0 }
-    gameComponent.changeLight();
+    gameUI.user = { username: "Luisa", score: 0, maxPoints: 0 };
+    gameUI.changeLight();
 
-    expect(gameComponent.lightClass).toBe("green");
+    expect(gameUI.lightClass).toBe("green");
+
+    gameUI.changeLight();
+
+    expect(gameUI.lightClass).toBe("red");
+  });
+
+  describe("test increment logic", () => {
+    it("should increment points when is green and rest id is the same button", () => {
+      gameUI.lightClass = "green";
+      gameUI.incrementPoints("left");
+      expect(gameUI.score).toEqual(1);
+
+      gameUI.incrementPoints("right");
+      expect(gameUI.score).toEqual(2);
+
+      gameUI.incrementPoints("right");
+      expect(gameUI.score).toEqual(1);
+
+      gameUI.changeLight();
+      gameUI.incrementPoints("left");
+      expect(gameUI.score).toEqual(0);
+    });
   });
 });
